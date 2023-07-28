@@ -4,7 +4,7 @@ from django.db import models
 
 # Create your models here.
 # 类名就是我们的表名
-class Test(models.Model):
+class Test(models.Model):  # course_test
     """测试学习用"""
 
     # 自增长字段 ---比如数据的序号
@@ -19,24 +19,33 @@ class Test(models.Model):
     NullBoolean = models.NullBooleanField()  # 允许为空的Boolean类型
 
     # 整型
-    PositiveSmallInteger = models.PositiveSmallIntegerField()  # 正整数并且大小为5个字节
-    SmallInteger = models.SmallIntegerField()  # 整数（正负皆可）并且为6个字节
+    PositiveSmallInteger = models.PositiveSmallIntegerField(
+        db_column="age"
+    )  # 正整数并且大小为5个字节
+    SmallInteger = models.SmallIntegerField(primary_key=True)  # 整数（正负皆可）并且为6个字节
     PositiveInteger = models.PositiveIntegerField()  # 正整数并且10个字节
-    Integer = models.IntegerField()  # 整数（正负皆可）并且11个字节
-    BigInteger = models.BigIntegerField()  # 整数（正负皆可）并且 20个字节
+    Integer = models.IntegerField(verbose_name="11个字节大小")  # 整数（正负皆可）并且11个字节
+    BigInteger = models.BigIntegerField(unique=True)  # 整数（正负皆可）并且 20个字节
 
     # 字符串类型
-    Char = models.CharField()  # 对应的是varchar,通常会指定一个长度 max_length
-    Text = models.TextField()  # 对应的是longtext,不需要指定长度
+    Char = models.CharField(
+        max_length=100, null=True, blank=True, db_index=True
+    )  # 对应的是varchar,通常会指定一个长度 max_length
+    Text = models.TextField(help_text="这个是longtext")  # 对应的是longtext,不需要指定长度
 
     # 时间日期类型
-    Date = models.DateField()  # 年月日
-    DateTime = models.DateTimeField()  # 年月日时分秒
+    Date = models.DateField(
+        unique_for_date=True,
+        auto_now=True,
+    )  # 年月日
+    DateTime = models.DateTimeField(
+        editable=False, unique_for_month=True, auto_now_add=True
+    )  # 年月日时分秒
     Duration = models.DurationField()  # 一段时间，是int类型 底层是python的timedelta实现
 
     # 浮点类型
     Float = models.FloatField()  #
-    Decimal = models.DecimalField()  # 需要指定整数有多少位，小数有多少位
+    Decimal = models.DecimalField(max_digits=4, decimal_places=2)  # 需要指定一共有多少位，小数有多少位
 
     # 其他字段
     Email = models.EmailField()  # 邮箱
@@ -57,12 +66,23 @@ class Test(models.Model):
 
 class A(models.Model):
     # 一对一关系 关联模型类Test
-    oneToOne = models.OneToOneField(Test)
+    oneToOne = models.OneToOneField(Test, related_name="one")
 
 
 class B(models.Model):
     # 一对多关系 关联到模型A
-    ForeignKey = models.ForeignKey(A)
+    ForeignKey = models.ForeignKey(A, on_delete=models.CASCADE)  # 删除级联
+    ForeignKey = models.ForeignKey(
+        A, on_delete=models.PROTECT
+    )  # 表示被关联的数据删除时，会报`ProtectedError异常`
+    ForeignKey = models.ForeignKey(
+        A, on_delete=models.SET_NULL, null=True, blank=True
+    )  # 删除置空
+    ForeignKey = models.ForeignKey(A, on_delete=models.SET_DEFAULT, default=0)
+
+    ForeignKey = models.ForeignKey(A, on_delete=models.DO_NOTHING)
+
+    ForeignKey = models.ForeignKey(A, on_delete=models.SET())
 
 
 class C(models.Model):
