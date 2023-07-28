@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "courses",
 ]
 
 MIDDLEWARE = [
@@ -75,8 +76,20 @@ WSGI_APPLICATION = "imooc.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": "imooc",
+        "HOST": "127.0.0.1",
+        "USER": "root",
+        "PASSWORD": "123456",
+        # MYSQL 5.7 及其以上版本，但是MySQL 数据库引擎设置存储引擎为 INNODB可不写
+        # "OPTIONS": {"init_command": "SET default_storage_engine=InnoDB;"},
+        # 如果是MySQL 5.7 以下版本
+        # "OPTIONS": {
+        #     "init_command": "SET default_storage_engine=InnoDB;"
+        #     "SET sql_mode = 'STRICT_TRANS_TABLES';"
+        #     "SET GLOBAL group_concat_max_length = 102400;"
+        #     "SET charset utf-8;"
+        # },
     }
 }
 
