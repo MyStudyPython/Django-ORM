@@ -53,3 +53,18 @@ class Test(models.Model):
 
     def __self__(self):
         return self.name
+
+
+class A(models.Model):
+    # 一对一关系 关联模型类Test
+    oneToOne = models.OneToOneField(Test)
+
+
+class B(models.Model):
+    # 一对多关系 关联到模型A
+    ForeignKey = models.ForeignKey(A)
+
+
+class C(models.Model):
+    # 多对多的关系 关联到模型B
+    manyToMany = models.ManyToManyField(B)
