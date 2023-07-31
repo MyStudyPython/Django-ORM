@@ -22,7 +22,7 @@ class AddressAPIView(View):
                 "id", "address"
             )
         else:  # 查询市或者区县
-            address_data = AddressInfo.objects.filter(pid_id=int(address_id)).valuse(
+            address_data = AddressInfo.objects.filter(pid_id=int(address_id)).values(
                 "id", "address"
             )
         area_list = []  # 转成list后json 序列化

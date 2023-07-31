@@ -20,5 +20,5 @@ from courses.views import IndexView, AddressAPIView
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", IndexView.as_view(), name="index"),
-    path("address", AddressAPIView.as_view(), name="address"),
+    path("address/<int:address_id>", AddressAPIView.as_view(), name="address"),
 ]
