@@ -10,7 +10,7 @@ class IndexView(View):
     "主页"
 
     def get(self, request):
-        return render(request, "index.html")
+        return render(request, "address.html")
 
 
 class AddressAPIView(View):
@@ -18,7 +18,7 @@ class AddressAPIView(View):
 
     def get(self, request, address_id):  # 接收一个参数的id,指mode中的pid属性对应的字段，即表中的pid_id.
         if int(address_id) == 0:  # 为0时表示为查询省，省的pid_id为null
-            address_data = AddressInfo.objects.filter(pid_isnull=True).valuse(
+            address_data = AddressInfo.objects.filter(pid__isnull=True).values(
                 "id", "address"
             )
         else:  # 查询市或者区县
