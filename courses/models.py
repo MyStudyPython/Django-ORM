@@ -103,5 +103,11 @@ class AddressInfo(models.Model):
     )
     # pid = models.ForeignKey("AddressInfo", null=True, verbose_name="自关联")  # 两种写法
 
+    """
+    这里虽然写的pid
+    但是在数据库上显示的 pid_id
+    因为在给 ForeignKey字段命名的时候，django会自动将字段名称加上"_id"后缀
+    """
+
     def __str__(self) -> str:  # python 2 中写法是 __unicode__ (self)_
         return self.address  # 这里返回地址信息，通常可以返回上面写好的字段
