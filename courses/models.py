@@ -90,7 +90,7 @@ from django.db import models
 #     manyToMany = models.ManyToManyField(B)
 
 
-class AddressInfo(models.Model):
+class AddressInfo(models.Model):  # couser_addressInfo
     """
     存储省市县地址信息
     """
@@ -103,11 +103,44 @@ class AddressInfo(models.Model):
     )
     # pid = models.ForeignKey("AddressInfo", null=True, verbose_name="自关联")  # 两种写法
 
+    # 这是为了测试下面的联合唯一字段 unique_together 所加的字段
+    note = models.CharField(max_length=200, null=True, blank=True, verbose_name="说明")
+
     """
     这里虽然写的pid
     但是在数据库上显示的 pid_id
     因为在给 ForeignKey字段命名的时候，django会自动将字段名称加上"_id"后缀
     """
 
-    def __str__(self) -> str:  # python 2 中写法是 __unicode__ (self)_
+    def __str__(self):  # python 2 中写法是 __unicode__ (self)_
         return self.address  # 这里返回地址信息，通常可以返回上面写好的字段
+
+    class Meta:
+        # 定义元数据
+        db_table = "address"  # 更改数据表，把couser_addressInfo 更改为 address
+
+        ordering = "pid"  # 指定按照什么字段进行排序
+
+        verbose_name = "省市县地址信息"  # 模型类设置可读信息
+        verbose_name_plural = verbose_name  # 因为英文所有有复数
+
+        # 继承
+        # abstact = True  # 设置成基类，让他不生成数据表，直供其他子类来继承
+
+        # permission = (("定义好的权限"), ("给权限的说明"))
+
+        managed = False  # 是否按照django祭奠的规则来管理模型类，或者是否创建，是否删除数据表
+
+        """
+        联合唯一键,对应的mysql里面的联合唯一约束
+        可以是一元元组，也可以是二元元组
+
+        一元元组表示只使用一组字段作为约束条件
+        多元元组表示每一个元组通过不同的字段进行联合约束
+        """
+        unique_together = ("address", "note")  # 一元元组
+        # unique_together = ((), ())  # 多元元组
+
+        # app_label = 'courses' # 这个等于 setting.py 里面 INATALLS_APP
+
+        # db_tablespace  #定义数据库表空间的名字
