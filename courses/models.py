@@ -119,7 +119,7 @@ class AddressInfo(models.Model):  # couser_addressInfo
         # 定义元数据
         db_table = "address"  # 更改数据表，把couser_addressInfo 更改为 address
 
-        ordering = "pid"  # 指定按照什么字段进行排序
+        ordering = ["pid"]  # 指定按照什么字段进行排序
 
         verbose_name = "省市县地址信息"  # 模型类设置可读信息
         verbose_name_plural = verbose_name  # 因为英文所有有复数
@@ -129,7 +129,7 @@ class AddressInfo(models.Model):  # couser_addressInfo
 
         # permission = (("定义好的权限"), ("给权限的说明"))
 
-        managed = False  # 是否按照django祭奠的规则来管理模型类，或者是否创建，是否删除数据表
+        # managed = False  # 是否按照django祭奠的规则来管理模型类，或者是否创建，是否删除数据表
 
         """
         联合唯一键,对应的mysql里面的联合唯一约束
