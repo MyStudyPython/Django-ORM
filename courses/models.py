@@ -176,6 +176,10 @@ class Course(models.Model):
     title = models.CharField(
         max_length=100, primary_key=True, db_index=True, verbose_name="课程名"
     )
+    # 添加外键
+    teacher = models.ForeignKey(
+        Teacher, on_delete=models.CASCADE, verbose_name="课程讲师", null=True, blank=True
+    )  # 删除级联
     """
     choices 对应数据库的枚举类型
 
@@ -217,6 +221,8 @@ class Student(models.Model):
     nickname = models.CharField(
         max_length=30, primary_key=True, db_index=True, verbose_name="昵称"
     )
+    # 设置外键
+    course = models.ManyToManyField(Course, verbose_name="课程")
     age = models.PositiveSmallIntegerField(verbose_name="年龄")
     gender = models.CharField(
         choices=((1, "男"), (2, "女"), (0, "保密")),
@@ -244,6 +250,10 @@ class TeacherAssistant(models.Model):
     nickname = models.CharField(
         max_length=30, primary_key=True, db_index=True, verbose_name="昵称"
     )
+    # 设置外键
+    teacher = models.OneToOneField(
+        Teacher, null=True, blank=True, on_delete=models.SET_NULL, verbose_name="讲师"
+    )  # 讲师被删掉，但是助教信息依然保留
     bobby = models.CharField(max_length=100, null=True, blank=True, verbose_name="爱好")
     created_at = models.DateField(auto_now_add=True, verbose_name="创建时间")
     update_at = models.DateField(auto_now=True, verbose_name="更新时间")
