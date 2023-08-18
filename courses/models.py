@@ -151,7 +151,7 @@ class Teacher(models.Model):
     讲师信息表
     """
 
-    name = models.CharField(
+    nickname = models.CharField(
         max_length=30, primary_key=True, db_index=True, verbose_name="昵称"
     )
     introduction = models.TextField(default="这位同学很懒，木有签名的说~", verbose_name="简介")
@@ -254,7 +254,7 @@ class TeacherAssistant(models.Model):
     teacher = models.OneToOneField(
         Teacher, null=True, blank=True, on_delete=models.SET_NULL, verbose_name="讲师"
     )  # 讲师被删掉，但是助教信息依然保留
-    bobby = models.CharField(max_length=100, null=True, blank=True, verbose_name="爱好")
+    hobby = models.CharField(max_length=100, null=True, blank=True, verbose_name="爱好")
     created_at = models.DateField(auto_now_add=True, verbose_name="创建时间")
     update_at = models.DateField(auto_now=True, verbose_name="更新时间")
 
