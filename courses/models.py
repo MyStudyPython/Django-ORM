@@ -119,7 +119,7 @@ class AddressInfo(models.Model):  # couser_addressInfo
         # 定义元数据
         db_table = "address"  # 更改数据表，把couser_addressInfo 更改为 address
 
-        ordering = ["pid"]  # 指定按照什么字段进行排序
+        # ordering = ["pid"]  # 指定按照什么字段进行排序
 
         verbose_name = "省市县地址信息"  # 模型类设置可读信息
         verbose_name_plural = verbose_name  # 因为英文所有有复数
@@ -165,7 +165,7 @@ class Teacher(models.Model):
 
     # 给模型对象返回了讲师的昵称
     def __str__(self):  # Python2:__unicode__
-        return super().nickname
+        return self.nickname
 
 
 class Course(models.Model):
