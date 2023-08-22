@@ -178,7 +178,12 @@ class Course(models.Model):
     )
     # 添加外键
     teacher = models.ForeignKey(
-        Teacher, on_delete=models.CASCADE, verbose_name="课程讲师", null=True, blank=True
+        Teacher,
+        on_delete=models.CASCADE,
+        verbose_name="课程讲师",
+        null=True,
+        blank=True,
+        # related_name="teac",
     )  # 删除级联
     """
     choices 对应数据库的枚举类型
@@ -237,6 +242,7 @@ class Student(models.Model):
     class Meta:
         verbose_name = "学生信息"
         verbose_name_plural = verbose_name
+        ordering = ["age"]  # 更改此项不需要重新生成数据表
 
     def __str__(self):
         return self.nickname

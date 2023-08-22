@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
+import logging  # 终端输出所有的debug信息
 
 from pathlib import Path
 
@@ -146,3 +147,24 @@ STATIC_ROOT = os.path.join(
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# 配置日志管理信息
+# the logging of project
+# LOGGING = {
+#     "version": 1,  # 日志级别
+#     # 日志处理器
+#     "handlers": {
+#         "console": {
+#             # 'level': 'DEBUG',
+#             "class": "logging.StreamHandler",
+#         }
+#     },
+#     # 日志管理器
+#     "loggers": {
+#         "django.db.backends": {
+#             "handlers": ["console"],
+#             "level": "DEBUG" if DEBUG else "INFO",
+#             # "propagate": True,  # 是否继续传递日志信息
+#         }
+#     },
+# }
