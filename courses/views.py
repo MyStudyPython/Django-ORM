@@ -201,7 +201,7 @@ class IndexView(View):
         反向查询
 
         """
-        # course = Course.objects.all()  # 查询课程表的同时查询老师表
+        # course = Course.objects.all()  # 查询课程表
         # for c in course:
         #     print(f"{c.title}--{c.teacher.nickname}--{c.teacher.fans}")
         """
