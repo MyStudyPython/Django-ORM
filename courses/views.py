@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from .models import AddressInfo, Teacher, Course, Student, TeacherAssistant, GroopConcat
 
 # 导入需要用的函数
-from django.db.models import Count, Avg, Max, Min, Sum
+from django.db.models import Count, Avg, Max, Min, Sum, F, Q
 
 # Create your views here.
 
@@ -328,28 +328,43 @@ class IndexView(View):
 
     #     return render(request, "address.html")
 
+    # def get(self, request):
+    #     """
+    #     自定义聚合查询
+
+    #     """
+    #     courses = Course.objects.values("teacher").annotate(
+    #         title=GroopConcat(
+    #             "title", distinct=True, ordering="title ASC", separator="-"
+    #         )
+    #     )
+
+    #     # 这里的title 不一定是字段名，可以进行自定义的
+    #     # 对应的字典中的key值
+
+    #     #  courses = Course.objects.values("teacher").annotate(title=GroopConcat("title", ordering="title ASC", separator="-"))
+    #     # {'teacher': '老王', 'title': 'Python 课程系列1-Python 课程系列2-Python 课程系列3-Python 课程系列4'}
+
+    #     #  courses = Course.objects.values("teacher").annotate(t=GroopConcat("title", ordering="title ASC", separator="-"))
+    #     # {'teacher': '老王', 't': 'Python 课程系列1-Python 课程系列2-Python 课程系列3-Python 课程系列4'}
+
+    #     for c in courses:
+    #         print(c)
+
+    #     return render(request, "address.html")
+
     def get(self, request):
-        """
-        自定义聚合查询
+        # 将所有课程的价格 都减去 11
+        Course.objects.update(price=F("price") - 11)
 
-        """
-        courses = Course.objects.values("teacher").annotate(
-            title=GroopConcat(
-                "title", distinct=True, ordering="title ASC", separator="-"
-            )
-        )
+        # 获取课程销量小于价格10倍的对象
+        # print(Course.objects.filter(volume__lt=F("price") * 10))
+        # 实现了两个字段进行比较，当然必须是同一类型的字段
 
-        # 这里的title 不一定是字段名，可以进行自定义的
-        # 对应的字典中的key值
-
-        #  courses = Course.objects.values("teacher").annotate(title=GroopConcat("title", ordering="title ASC", separator="-"))
-        # {'teacher': '老王', 'title': 'Python 课程系列1-Python 课程系列2-Python 课程系列3-Python 课程系列4'}
-
-        #  courses = Course.objects.values("teacher").annotate(t=GroopConcat("title", ordering="title ASC", separator="-"))
-        # {'teacher': '老王', 't': 'Python 课程系列1-Python 课程系列2-Python 课程系列3-Python 课程系列4'}
-
-        for c in courses:
-            print(c)
+        # 查询所有的Java课程，并且销量大于5000
+        print(Course.objects.filter(Q(title__icontains="Java") & Q(volume__gte=5000)))
+        print(Course.objects.filter(title__icontains="Java", volume__gte=5000))
+        # print(Course.objects.filter(Q(title__icontains="golang") & Q(volume__lte=1000)))
 
         return render(request, "address.html")
 
