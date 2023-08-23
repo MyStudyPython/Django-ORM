@@ -207,6 +207,8 @@ class Course(models.Model):
     class Meta:
         verbose_name = "课程信息表"
         verbose_name_plural = verbose_name
+        # 搭配 latest() 和  earliest()
+        get_latest_by = "created_at"  # 按照创建时间排序
 
     def __str__(self):
         """
