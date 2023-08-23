@@ -131,7 +131,7 @@ class IndexView(View):
 
     #     """
 
-    #     #  1.all()  filter()  order_by():排序  exclude():除了xx元素以外  reverse():反向排序  distinct():去重
+    #     """1.all()  filter()  order_by():排序  exclude():除了xx元素以外  reverse():反向排序  distinct():去重"""
     #     # 使用exclude 排除某一项
     #     s1 = Student.objects.all().exclude(nickname="A同学")
     #     for s in s1:
@@ -144,7 +144,7 @@ class IndexView(View):
     #         # print(s.nickname, s.age)
     #         pass
 
-    #     # 2.extra():给字段取别名   defer():排除一些字段   only():选择一些字段
+    #     """2.extra():给字段取别名   defer():排除一些字段   only():选择一些字段"""
     #     # extra(): extra(select={"[要取的别名]": "[原来字段名]"})
     #     s3 = Student.objects.all().extra(select={"name": "nickname"})
     #     for s in s3:
@@ -155,7 +155,7 @@ class IndexView(View):
     #     #     str(Student.objects.all().only("nickname", "age").query)
     #     # )  # SELECT `courses_student`.`nickname`, `courses_student`.`age` FROM `courses_student` ORDER BY `courses_student`.`age` ASC
 
-    #     # 3.values():字典 values_list():元组  获取字典或者是元组形式的queryset
+    #     """3.values():字典 values_list():元组  获取字典或者是元组形式的queryset"""
     #     # values() 输出的是dict类型的
     #     # print(TeacherAssistant.objects.values("nickname", "hobby"))
     #     # <QuerySet [{'nickname': '助教1', 'hobby': '看老友记'}, {'nickname': '助教2', 'hobby': '看生活大爆炸'}, {'nickname': '助教3', 'hobby': '看小鲤鱼历险记'}]>
@@ -178,7 +178,7 @@ class IndexView(View):
     #     # datetimes('[查询时间的字段]', 'month', order='DESC')
     #     # print(Course.objects.datetimes("created_at", "month", order="DESC"))
 
-    #     # 5.集合的运算  union():并集   intersection():交集   difference():差集
+    #     """5.集合的运算  union():并集   intersection():交集   difference():差集"""
     #     s1 = Course.objects.filter(price__gte=240)  # 大于等于240
     #     s2 = Course.objects.filter(price__lte=260)  # 小于等于260
 
@@ -237,7 +237,7 @@ class IndexView(View):
     #     """
     #     # print(Teacher.objects.get(nickname="Jack").teac.all())
 
-    #     # 7.annotate() 使用聚合计数、求和、平均数、raw()、执行原生的SQL
+    #     """7.annotate() 使用聚合计数、求和、平均数、raw()、执行原生的SQL"""
     #     """
     #     我们以讲师来分组,每一个讲师所有课程销量的总和,以及他的平均价格
     #     """
@@ -278,7 +278,6 @@ class IndexView(View):
            exists()            判断是否存在
            count()             统计个数
            aggregate()           聚合
-
 
         """
         """1.获取对象 get() get_or_create() first() last()  latest()  earliest()  in_bulk()"""
