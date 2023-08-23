@@ -273,3 +273,30 @@ class TeacherAssistant(models.Model):
 
     def __str__(self):
         return self.nickname
+
+
+# 让GroupConcat 从models中继承已有的聚合查询类 Aggregate 类
+class GroopConcat(models.Aggregate):
+    """
+    自定义实现聚合功能，实现GROUP_CONCAT 功能
+
+    function 是我们MySQL的函数 GROUP_CONCAT 字符串拼接
+    template 是 SQL 语句
+    """
+
+    function = "GROUP_CONCAT"
+
+    template = "%(function)s(%(distinct)s%(expressions)s%(ordering)s%(separator)s)"
+
+    def __init__(
+        self, expression, distinct=False, ordering=None, separator=",", **extra
+    ):
+        self.distinct = distinct  # 添加distinct属性
+        super(GroopConcat, self).__init__(
+            expression,
+            distinct="DISTINCT " if distinct else "",  # 根据distinct参数选择是否输出DISTINCT关键字
+            ordering=" ORDER BY %s" % ordering if ordering is not None else "",
+            separator=" SEPARATOR '%s'" % separator,
+            output_field=models.CharField(),
+            **extra
+        )

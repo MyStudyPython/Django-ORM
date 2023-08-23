@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import View
 from django.http import JsonResponse
-from .models import AddressInfo, Teacher, Course, Student, TeacherAssistant
+from .models import AddressInfo, Teacher, Course, Student, TeacherAssistant, GroopConcat
 
 # 导入需要用的函数
 from django.db.models import Count, Avg, Max, Min, Sum
@@ -249,82 +249,107 @@ class IndexView(View):
 
     #     return render(request, "address.html")
 
+    # def get(self, request):
+    #     """
+    #     不返回新的QuerySet API
+
+    #     1. 获取对象
+    #        get()               获取对象
+    #        get_or_create()     有数据就通过get获取没有就创建数据
+    #        first()             第一条记录
+    #        last()              最后一条记录
+    #        lastest()           最近的记录
+    #        earliest()          最早的记录
+    #        in_bulk()           批量返回对象
+
+    #     2. 创建对象
+    #        create()             创建
+    #        bulk_create()        批量创建
+    #        update_or_create()   创建或更新
+
+    #     3. 更新对象
+    #        update()             更新
+    #        update_or_create()   更新或创建
+
+    #     4. 删除对象
+    #        delete()            删除(使用filter过滤)
+
+    #     5. 其他操作
+    #        exists()            判断是否存在
+    #        count()             统计个数
+    #        aggregate()           聚合
+
+    #     """
+    #     """1.获取对象 get() get_or_create() first() last()  latest()  earliest()  in_bulk()"""
+    #     # first() 第一条记录
+    #     # print(Course.objects.first())  # 打印格式为 {type} - {title}
+    #     # last()  最后一条记录
+    #     # print(Course.objects.last())
+
+    #     # 需要在模型类里面设置 get_latest_by = [创建的字段] 代表根据创建的字段进行排序
+    #     # latest()  # 最近的记录
+    #     # print(Course.objects.latest())
+    #     # earliest() # 最早的记录
+    #     # print(Course.objects.earliest())
+
+    #     # in_bulk() 批量返回对象 根据主键的值传递一个列表 列表中传递主键的值
+    #     # print(Course.objects.in_bulk(["Python 课程系列2", "PHP进阶课程1"]))  # 返回一个字典
+
+    #     """2.创建对象  create():创建对象  bulk_create():批量创建对象  create_or_update():如果没有就创建有就更新"""
+    #     # bulk_create:给函数传一个列表
+
+    #     """3.更新对象 update():更新  update_or_create():更新或创建"""
+    #     # update
+    #     Course.objects.filter(title="Python 课程系列1").update(price=1000)
+
+    #     """ 4.删除对象 delete():使用filter过滤"""
+    #     Course.objects.filter(title="test").delete()
+
+    #     """5.其他操作 exist():是否存在  count():统计个数  aggregate():聚合"""
+    #     # exist():是否存在
+    #     # print(Course.objects.filter(title="test").exists())  # False
+    #     # print(Course.objects.filter(title="Python 课程系列1").exists())  # True
+
+    #     # count():记录数据表中的数据个数
+    #     # print(Course.objects.count())  # 21 数据库的记录数
+
+    #     # annotate():和value配合使用 对分组结果进行统计
+    #     # aggregate():对整个数据库中的数据结果进行处理
+
+    #     # 对整个课程找出最大值，最小值，平均值，总和进行统计
+    #     print(
+    #         Course.objects.aggregate(
+    #             Max("price"), Min("price"), Avg("price"), Sum("volume")
+    #         )
+    #     )
+    #     # {'price__max': 1000, 'price__min': 220, 'price__avg': 479.9524, 'volume__sum': 78302}
+
+    #     # 字段名是 "字段__函数名"
+
+    #     return render(request, "address.html")
+
     def get(self, request):
         """
-        不返回新的QuerySet API
-
-        1. 获取对象
-           get()               获取对象
-           get_or_create()     有数据就通过get获取没有就创建数据
-           first()             第一条记录
-           last()              最后一条记录
-           lastest()           最近的记录
-           earliest()          最早的记录
-           in_bulk()           批量返回对象
-
-        2. 创建对象
-           create()             创建
-           bulk_create()        批量创建
-           update_or_create()   创建或更新
-
-        3. 更新对象
-           update()             更新
-           update_or_create()   更新或创建
-
-        4. 删除对象
-           delete()            删除(使用filter过滤)
-
-        5. 其他操作
-           exists()            判断是否存在
-           count()             统计个数
-           aggregate()           聚合
+        自定义聚合查询
 
         """
-        """1.获取对象 get() get_or_create() first() last()  latest()  earliest()  in_bulk()"""
-        # first() 第一条记录
-        # print(Course.objects.first())  # 打印格式为 {type} - {title}
-        # last()  最后一条记录
-        # print(Course.objects.last())
-
-        # 需要在模型类里面设置 get_latest_by = [创建的字段] 代表根据创建的字段进行排序
-        # latest()  # 最近的记录
-        # print(Course.objects.latest())
-        # earliest() # 最早的记录
-        # print(Course.objects.earliest())
-
-        # in_bulk() 批量返回对象 根据主键的值传递一个列表 列表中传递主键的值
-        # print(Course.objects.in_bulk(["Python 课程系列2", "PHP进阶课程1"]))  # 返回一个字典
-
-        """2.创建对象  create():创建对象  bulk_create():批量创建对象  create_or_update():如果没有就创建有就更新"""
-        # bulk_create:给函数传一个列表
-
-        """3.更新对象 update():更新  update_or_create():更新或创建"""
-        # update
-        Course.objects.filter(title="Python 课程系列1").update(price=1000)
-
-        """ 4.删除对象 delete():使用filter过滤"""
-        Course.objects.filter(title="test").delete()
-
-        """5.其他操作 exist():是否存在  count():统计个数  aggregate():聚合"""
-        # exist():是否存在
-        # print(Course.objects.filter(title="test").exists())  # False
-        # print(Course.objects.filter(title="Python 课程系列1").exists())  # True
-
-        # count():记录数据表中的数据个数
-        # print(Course.objects.count())  # 21 数据库的记录数
-
-        # annotate():和value配合使用 对分组结果进行统计
-        # aggregate():对整个数据库中的数据结果进行处理
-
-        # 对整个课程找出最大值，最小值，平均值，总和进行统计
-        print(
-            Course.objects.aggregate(
-                Max("price"), Min("price"), Avg("price"), Sum("volume")
+        courses = Course.objects.values("teacher").annotate(
+            title=GroopConcat(
+                "title", distinct=True, ordering="title ASC", separator="-"
             )
         )
-        # {'price__max': 1000, 'price__min': 220, 'price__avg': 479.9524, 'volume__sum': 78302}
 
-        # 字段名是 "字段__函数名"
+        # 这里的title 不一定是字段名，可以进行自定义的
+        # 对应的字典中的key值
+
+        #  courses = Course.objects.values("teacher").annotate(title=GroopConcat("title", ordering="title ASC", separator="-"))
+        # {'teacher': '老王', 'title': 'Python 课程系列1-Python 课程系列2-Python 课程系列3-Python 课程系列4'}
+
+        #  courses = Course.objects.values("teacher").annotate(t=GroopConcat("title", ordering="title ASC", separator="-"))
+        # {'teacher': '老王', 't': 'Python 课程系列1-Python 课程系列2-Python 课程系列3-Python 课程系列4'}
+
+        for c in courses:
+            print(c)
 
         return render(request, "address.html")
 
