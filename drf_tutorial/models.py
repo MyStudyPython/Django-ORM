@@ -57,3 +57,6 @@ class Course(models.Model):
     # 模型类实例
     def __str__(self):
         return self.name
+
+
+# Course.objects.all()  # Django QuerySet 或者 生成模型类实例的时候 instance
