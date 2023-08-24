@@ -39,8 +39,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "courses"
+    "courses",
     # "courses.apps.CoursesConfig",
+    "rest_framework",  # 开发rest_framework
+    "rest_framework.authtoken",  # DRF 自带的token 认证
 ]
 
 MIDDLEWARE = [
@@ -168,3 +170,52 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 #         }
 #     },
 # }
+
+
+# DRF 的全局配置
+REST_FRAMEWORK = {
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 50,
+    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
+    "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.AutoSchema",
+    # 格式化time
+    "DATETIME_FORMAT": "%Y-%m-%d %H:%M:%S",
+    # 当response返回数据对象时使用的类 --- > DRF 自带可不写
+    # "DEFAULT_RENDER_CLASSES": [
+    #     # 只支持元组和Json对象
+    #     "rest_framework.renders.JsonRenderer",
+    #     "rest_framework.renders.BrowsableAPIRenderer",
+    # ],
+    # 解析器 解析request中的data
+    "DEFAULT_PARSER_CLASSES": [
+        "rest_framework.parser.JSONParser",
+        "rest_framework.parser.FormParser",
+        "rest_framework.parser.MultiPartParser",
+    ],
+    # 权限
+    "DEFAULT_PERMISSIONS_CLASS": [
+        # 用户登陆
+        "rest_framework.permissions.isAuthenticated",
+    ],
+    # 认证
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        # BaseAuthentication
+        "rest_framework.authentication.BaseAuthentication",
+        # session 认证
+        "rest_framework.authentication.SessionAuthentication",
+        # token 认证 ---> 需要在INSTALLED_APPS 中把drf自带的token 认证加上
+        "rest_framework.authentication.TokenAuthentication",
+    ],
+}
+
+
+# 上面写的都是对应的类
+# from rest_framework import authentication, permissions, parsers,renderers
+
+# parsers.JSONParser
+
+# permissions.IsAuthenticated
+
+# authentication.BaseAuthentication
+
+# renderers.BrowsableAPIRenderer
