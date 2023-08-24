@@ -1,5 +1,5 @@
-# Django-ORM
-慕课网 学习全面掌握Django ORM
+# study_django
+慕课网 学习全面掌握Django ORM 和  Django REST framework前后端分离框架
 
 # 开发环境
 - 前端 ：HTML/CSS + JQuery v3.7
