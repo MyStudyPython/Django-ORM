@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     # "courses.apps.CoursesConfig",
     "rest_framework",  # 开发rest_framework
     "rest_framework.authtoken",  # DRF 自带的token 认证
+    "drf_tutorial",
 ]
 
 MIDDLEWARE = [
