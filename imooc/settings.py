@@ -207,6 +207,8 @@ REST_FRAMEWORK = {
         # token 认证 ---> 需要在INSTALLED_APPS 中把drf自带的token 认证加上
         "rest_framework.authentication.TokenAuthentication",
     ],
+    # 自定义url 字段
+    # "URL_FIELD_NAME": "link",
 }
 
 
