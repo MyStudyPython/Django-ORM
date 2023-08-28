@@ -60,3 +60,13 @@ class Course(models.Model):
 
 
 # Course.objects.all()  # Django QuerySet 或者 生成模型类实例的时候 instance
+
+"""
+django序列化器还有很多需要完善的地方
+
+1. 验证处理 反序列化 前端传输的时候 `request.data`
+2. 验证器参数
+3. 同时序列化多个对象
+4. 序列化的过程中添加上下文
+5. 没有对无效的数据异常处理
+"""
